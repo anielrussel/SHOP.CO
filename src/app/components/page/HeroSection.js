@@ -10,7 +10,7 @@ const HeroSection = () => {
   return (
     <div className="bg-sc-grayBg grid md:grid-cols-2 px-5 md:px-20 h-auto  md:h-[90vh] pt-10 md:pt-0">
       <section className="flex flex-col justify-center items-start gap-5">
-        <h1 className="font-black text-[36px] md:text-[64px] leading-none pr-32">
+        <h1 className="text-[36px] md:text-[64px] leading-none pr-32">
           FIND CLOTHES THAT MATCHES YOUR STYLE
         </h1>
         <p className="text-black/60 md:text-base text-sm">

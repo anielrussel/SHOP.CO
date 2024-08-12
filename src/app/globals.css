@@ -10,4 +10,5 @@ body {
 
 h1 {
   font-family: var(--font-poppins);
+  font-weight: 900;
 }
