@@ -45,6 +45,7 @@ const HeroSection = () => {
           height={0}
           sizes="100vw"
           style={{ width: "100%", height: "auto" }}
+          priority
           alt="Background Image"
         />
         <Image

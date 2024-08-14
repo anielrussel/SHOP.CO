@@ -7,10 +7,11 @@ module.exports = {
   ],
   theme: {
     extend: {
-     colors: {
-      'sc-grayBg': '#F2F0F1',
-      'sc-grayBtn': '#F0F0F0'
-     }
+      colors: {
+        "sc-grayBg": "#F2F0F1",
+        "sc-grayBtn": "#F0F0F0",
+        "sc-red": "#FF3333",
+      },
     },
   },
   plugins: [],

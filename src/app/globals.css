@@ -12,3 +12,8 @@ h1 {
   font-family: var(--font-poppins);
   font-weight: 900;
 }
+
+hr {
+  border-color: black;
+  opacity: 0.1;
+}
