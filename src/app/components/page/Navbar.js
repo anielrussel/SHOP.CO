@@ -38,7 +38,7 @@ const Navbar = ({ children }) => {
             <LuMenu
               size={30}
               onClick={handleToggleNavbar}
-              className="cursor-ointer"
+              className="cursor-pointer md:hidden block"
             />
             <Image
               src={logo}
