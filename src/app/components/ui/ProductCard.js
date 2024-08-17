@@ -3,6 +3,7 @@ import React from "react";
 import stars from "../../../../public/stars.png";
 
 import Image from "next/image";
+import { Rate } from "antd";
 
 const ProductCard = ({ src, name, rating, price, prevPrice, discount }) => {
   return (
@@ -20,9 +21,10 @@ const ProductCard = ({ src, name, rating, price, prevPrice, discount }) => {
       </section>
       <section className="flex flex-col gap-1 mt-2">
         <h2 className="font-bold text-lg">{name}</h2>
-        <span className="flex gap-1">
-          <Image src={stars} width={"auto"} height={"auto"} alt="rating" />
-          <p className="text-sm font-normal text-black/60">{rating}</p>
+        <span className="flex gap-2 items-center">
+          {/* <Image src={stars} width={"auto"} height={"auto"} alt="rating" /> */}
+          <Rate disabled allowHalf defaultValue={rating} />
+          <p className="text-sm font-normal text-black/60">{`${rating}/5`}</p>
         </span>
         <span className="text-xl font-bold flex gap-2">
           {price} <p className="text-black/40 line-through">{prevPrice}</p>

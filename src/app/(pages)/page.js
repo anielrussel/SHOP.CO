@@ -1,21 +1,23 @@
 import React from "react";
-import HeroSection from "../components/page/HeroSection";
-import Partners from "../components/page/Partners";
-import NewArrivals from "../components/page/NewArrivals";
-import TopSelling from "../components/page/TopSelling";
-import DressStyle from "../components/page/DressStyle";
+import HPHeroSection from "../components/page/HPHeroSection";
+import HPPartners from "../components/page/HPPartners";
+import HPNewArrivals from "../components/page/HPNewArrivals";
+import HPTopSelling from "../components/page/HPTopSelling";
+import HPDressStyle from "../components/page/HPDressStyle";
+import HPFeedbacks from "../components/page/HPFeedbacks";
 
 const HomePage = () => {
   return (
     <main>
-      <HeroSection />
-      <Partners />
-      <NewArrivals />
+      <HPHeroSection />
+      <HPPartners />
+      <HPNewArrivals />
       <div className="px-20">
         <hr />
       </div>
-      <TopSelling />
-      <DressStyle />
+      <HPTopSelling />
+      <HPDressStyle />
+      <HPFeedbacks />
     </main>
   );
 };
