@@ -1,4 +1,7 @@
+"use client";
+
 import React from "react";
+import Image from "next/image";
 import { TfiEmail } from "react-icons/tfi";
 import {
   FaXTwitter,
@@ -8,13 +11,69 @@ import {
 } from "react-icons/fa6";
 
 import logo from "../../../../public/SHOP.CO.png";
-import Image from "next/image";
+import visa from "../../../../public/visa.png";
+import mastercard from "../../../../public/mastercard.png";
+import paypal from "../../../../public/paypal.png";
+import applepay from "../../../../public/applepay.png";
+import googlepay from "../../../../public/googlepay.png";
 
 const socials = [
   <FaXTwitter />,
   <FaFacebookF />,
   <FaInstagram />,
   <FaGithub />,
+];
+
+const footerLinks = [
+  {
+    title: "Company",
+    links: ["About", "Features", "Works", "Career"],
+  },
+  {
+    title: "Help",
+    links: [
+      "Customer Support",
+      "Delivery Details",
+      "Terms & Conditions",
+      "Privacy Policy",
+    ],
+  },
+  {
+    title: "FAQ",
+    links: ["Account", "Manage Deliveries", "Orders", "Payments"],
+  },
+  {
+    title: "Resources",
+    links: [
+      "Free eBooks",
+      "Development Tutorial",
+      "How to - Blog",
+      "YouTube Playlist",
+    ],
+  },
+];
+
+const payments = [
+  {
+    src: visa,
+    name: "visa",
+  },
+  {
+    src: mastercard,
+    name: "mastercard",
+  },
+  {
+    src: paypal,
+    name: "paypal",
+  },
+  {
+    src: applepay,
+    name: "applepay",
+  },
+  {
+    src: googlepay,
+    name: "googlepay",
+  },
 ];
 
 const Footer = () => {
@@ -44,9 +103,10 @@ const Footer = () => {
           </section>
         </div>
       </div>
-      <div className="bg-sc-grayBtn md:px-20 px-5 pt-28 grid grid-cols-5">
-        <section>
-          <article>
+
+      <div className="bg-sc-grayBtn md:px-20 px-5 pt-32 ">
+        <div className="flex md:flex-row flex-col gap-5 md:gap-0 md:justify-between pb-10">
+          <section className="flex flex-col gap-5 md:w-1/5 w-full">
             <Image
               src={logo}
               width={160}
@@ -54,7 +114,7 @@ const Footer = () => {
               alt="shop.co"
               className="w-[100px] md:w-[160px]"
             />
-            <p>
+            <p className="text-sm font-normal text-black/60">
               We have clothes that suits your style and which you’re proud to
               wear. From women to men.
             </p>
@@ -68,12 +128,38 @@ const Footer = () => {
                 </div>
               ))}
             </span>
-          </article>
-        </section>
-        <section>Company</section>
-        <section>Help</section>
-        <section>FAQ</section>
-        <section>Resources</section>
+          </section>
+          <div className="grid md:gap-x-20 md:grid-cols-4 grid-cols-2 gap-y-5">
+            {footerLinks.map((footerLink, index) => (
+              <section key={index} className="">
+                <h2 className="text-base font-medium uppercase tracking-widest">
+                  {footerLink.title}
+                </h2>
+                <ul className="pt-4 flex flex-col gap-2">
+                  {footerLink.links.map((link, index) => (
+                    <li
+                      key={index}
+                      className="text-base text-black/60 font-normal"
+                    >
+                      {link}
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ))}
+          </div>
+        </div>
+
+        <hr />
+
+        <div className="pt-5 pb-10 flex md:flex-row flex-col items-center gap-2 md:justify-between">
+          <p>© 2000-2021, All rights reserved</p>
+          <section className="flex">
+            {payments.map((payment, index) => (
+              <Image key={index} src={payment.src} alt={payment.name} />
+            ))}
+          </section>
+        </div>
       </div>
     </footer>
   );

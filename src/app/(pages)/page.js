@@ -5,7 +5,6 @@ import HPNewArrivals from "../components/page/HPNewArrivals";
 import HPTopSelling from "../components/page/HPTopSelling";
 import HPDressStyle from "../components/page/HPDressStyle";
 import HPFeedbacks from "../components/page/HPFeedbacks";
-import Footer from "../components/ui/Footer";
 
 const HomePage = () => {
   return (
@@ -19,7 +18,6 @@ const HomePage = () => {
       <HPTopSelling />
       <HPDressStyle />
       <HPFeedbacks />
-      {/* <Footer /> */}
     </main>
   );
 };
