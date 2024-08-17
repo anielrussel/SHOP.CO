@@ -32,7 +32,7 @@ const partners = [
   },
 ];
 
-const Partners = () => {
+const HPPartners = () => {
   return (
     <div className="bg-black h-[122px] flex items-center justify-between px-5 md:px-20 flex-wrap">
       {partners.map((partner, index) => (
@@ -48,4 +48,4 @@ const Partners = () => {
   );
 };
 
-export default Partners;
+export default HPPartners;

@@ -6,7 +6,7 @@ import vector1 from "../../../../public/Vector1.png";
 
 import Button from "../ui/Button";
 
-const HeroSection = () => {
+const HPHeroSection = () => {
   return (
     <div className="bg-sc-grayBg grid md:grid-cols-2 px-5 md:px-20 h-auto  md:h-[90vh] pt-10 md:pt-0">
       <section className="flex flex-col justify-center items-start gap-5">
@@ -67,4 +67,4 @@ const HeroSection = () => {
   );
 };
 
-export default HeroSection;
+export default HPHeroSection;
