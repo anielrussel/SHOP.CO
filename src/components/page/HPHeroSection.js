@@ -1,10 +1,9 @@
 import React from "react";
 import Image from "next/image";
 
-import herobg from "../../../../public/HeroBg.png";
-import vector1 from "../../../../public/Vector1.png";
-
-import Button from "../ui/Button";
+import herobg from "../../../public/HeroBg.png";
+import vector1 from "../../../public/Vector1.png";
+import { Button } from "@/components/ui/button";
 
 const HPHeroSection = () => {
   return (
@@ -18,11 +17,8 @@ const HPHeroSection = () => {
           designed to bring out your individuality and cater to your sense of
           style.
         </p>
-        <Button
-          title={"Shop Now"}
-          primary
-          className={"rounded-full md:w-auto w-full py-3 px-16"}
-        />
+
+        <Button className="rounded-full md:w-1/3 w-full py-6">Shop Now</Button>
         <article className="flex gap-10 justify-center md:justify-between flex-wrap w-full mt-10">
           <span>
             <h2 className="text-4xl font-medium">200+</h2>

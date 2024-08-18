@@ -10,18 +10,18 @@ import {
   FaGithub,
 } from "react-icons/fa6";
 
-import logo from "../../../../public/SHOP.CO.png";
-import visa from "../../../../public/visa.png";
-import mastercard from "../../../../public/mastercard.png";
-import paypal from "../../../../public/paypal.png";
-import applepay from "../../../../public/applepay.png";
-import googlepay from "../../../../public/googlepay.png";
+import logo from "../../../public/SHOP.CO.png";
+import visa from "../../../public/visa.png";
+import mastercard from "../../../public/mastercard.png";
+import paypal from "../../../public/paypal.png";
+import applepay from "../../../public/applepay.png";
+import googlepay from "../../../public/googlepay.png";
 
 const socials = [
-  <FaXTwitter />,
-  <FaFacebookF />,
-  <FaInstagram />,
-  <FaGithub />,
+  { icon: <FaXTwitter />, name: "Twitter" },
+  { icon: <FaFacebookF />, name: "Facebook" },
+  { icon: <FaInstagram />, name: "Instagram" },
+  { icon: <FaGithub />, name: "Github" },
 ];
 
 const footerLinks = [
@@ -119,19 +119,19 @@ const Footer = () => {
               wear. From women to men.
             </p>
             <span className="flex gap-4">
-              {socials.map((social, index) => (
+              {socials.map((social) => (
                 <div
-                  key={index}
+                  key={social.name}
                   className="border border-black/20 rounded-full p-2"
                 >
-                  {social}
+                  {social.icon}
                 </div>
               ))}
             </span>
           </section>
           <div className="grid md:gap-x-20 md:grid-cols-4 grid-cols-2 gap-y-5">
-            {footerLinks.map((footerLink, index) => (
-              <section key={index} className="">
+            {footerLinks.map((footerLink) => (
+              <section key={footerLink.title} className="">
                 <h2 className="text-base font-medium uppercase tracking-widest">
                   {footerLink.title}
                 </h2>

@@ -55,6 +55,8 @@ const HPFeedbacks = () => {
     swipeToSlide: true,
     speed: 500,
     initialSlide: 0,
+    autoplay: true,
+    autoplaySpeed: 3000,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
     responsive: [
@@ -91,8 +93,8 @@ const HPFeedbacks = () => {
         OUR HAPPY CUSTOMERS
       </h1>
       <Slider {...settings}>
-        {feedbacks.map((feedback, index) => (
-          <div key={index}>
+        {feedbacks.map((feedback) => (
+          <div key={feedback.name}>
             <Rate disabled allowHalf defaultValue={feedback.rating} />
             <span className="py-2 text-xl font-bold flex items-center gap-2">
               <h2>{feedback.name}</h2>

@@ -3,11 +3,11 @@
 import React from "react";
 import Image from "next/image";
 
-import versace from "../../../../public/versace.png";
-import zara from "../../../../public/zara.png";
-import gucci from "../../../../public/gucci.png";
-import prada from "../../../../public/prada.png";
-import ck from "../../../../public/ck.png";
+import versace from "../../../public/versace.png";
+import zara from "../../../public/zara.png";
+import gucci from "../../../public/gucci.png";
+import prada from "../../../public/prada.png";
+import ck from "../../../public/ck.png";
 
 const partners = [
   {
@@ -35,9 +35,9 @@ const partners = [
 const HPPartners = () => {
   return (
     <div className="bg-black h-[122px] flex items-center justify-between px-5 md:px-20 flex-wrap">
-      {partners.map((partner, index) => (
+      {partners.map((partner) => (
         <Image
-          key={index}
+          key={partner.alt}
           src={partner.logo}
           width={100}
           height={100}

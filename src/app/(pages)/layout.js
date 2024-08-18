@@ -1,8 +1,8 @@
 import React from "react";
-import Navbar from "../components/ui/Navbar";
-import Footer from "../components/ui/Footer";
+import Navbar from "../../components/page/Navbar";
+import Footer from "../../components/page/Footer";
 
-export default function ({ children }) {
+export default function PagesLayout({ children }) {
   return (
     <main>
       <Navbar />
