@@ -1,7 +1,5 @@
 import React from "react";
 
-import stars from "../../../../public/stars.png";
-
 import Image from "next/image";
 import { Rate } from "antd";
 
