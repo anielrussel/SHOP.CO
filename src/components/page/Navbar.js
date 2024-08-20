@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, forwardRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { FiSearch } from "react-icons/fi";
@@ -13,36 +13,58 @@ import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import logo from "../../../public/SHOP.CO.png";
 
 import { Input } from "@/components/ui/input";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { cn } from "@/lib/utils";
 
 const links = [
   {
+    id: "shop",
     title: "Shop",
-    href: "#",
-    icon1: <IoIosArrowDown />,
-    icon2: <IoIosArrowUp />,
-    children: [
-      {
-        title: "Shirts",
-        href: "/shirts",
-      },
-      {
-        title: "Jeans",
-        href: "#",
-      },
-      {
-        title: "Shorts",
-        href: "#",
-      },
-      {
-        title: "Hoodies",
-        href: "#",
-      },
-    ],
+    href: "/shop",
   },
-  { title: "On Sale", href: "#" },
-  { title: "New Arrivals", href: "#" },
-  { title: "Brands", href: "#" },
+  { id: "onsale", title: "On Sale", href: "#" },
+  { id: "newarrival", title: "New Arrivals", href: "#" },
+  { id: "brands", title: "Brands", href: "#" },
 ];
+
+const ListItem = forwardRef(({ className, title, children, ...props }, ref) => {
+  return (
+    <li>
+      <NavigationMenuLink asChild>
+        <a
+          ref={ref}
+          className={cn(
+            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+            className
+          )}
+          {...props}
+        >
+          <div className="text-sm font-medium leading-none">{title}</div>
+          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+            {children}
+          </p>
+        </a>
+      </NavigationMenuLink>
+    </li>
+  );
+});
+ListItem.displayName = "ListItem";
+
 const Navbar = () => {
   const [toggleNavbar, setToggleNavbar] = useState(false);
   const [toggleShop, setToggleShop] = useState(false);
@@ -65,11 +87,25 @@ const Navbar = () => {
 
       <section className="flex items-center justify-between md:px-20 px-5 py-5">
         <span className="flex items-center gap-4">
-          <LuMenu
-            size={30}
-            onClick={handleToggleNavbar}
-            className="cursor-pointer md:hidden block"
-          />
+          <Sheet>
+            <SheetTrigger asChild>
+              <LuMenu
+                size={30}
+                onClick={handleToggleNavbar}
+                className="cursor-pointer md:hidden block"
+              />
+            </SheetTrigger>
+            <SheetContent side="left">
+              <SheetHeader>
+                {links.map((link, index) => (
+                  <Link key={index} href={link.href}>
+                    <SheetTitle>{link.title}</SheetTitle>
+                  </Link>
+                ))}
+              </SheetHeader>
+            </SheetContent>
+          </Sheet>
+
           <Link href={"/"}>
             <Image
               src={logo}
@@ -81,31 +117,43 @@ const Navbar = () => {
           </Link>
         </span>
 
-        <ul className="hidden md:flex items-center gap-8 relative">
+        <ul className="hidden md:flex items-center gap-4 relative">
           {links.map((link) => (
-            <>
-              <Link key={link.title} href={link.href}>
-                <li className="flex items-center gap-2">
-                  {link.title}
-                  {toggleShop ? (
-                    <span onClick={handleToggleShop}>{link.icon2}</span>
-                  ) : (
-                    <span onClick={handleToggleShop}>{link.icon1}</span>
-                  )}
-                </li>
-              </Link>
-              {/* sub menus */}
-              {toggleShop && (
-                <ul className="absolute z-50 top-8 -left-2 bg-white shadow-lg rounded-lg py-3 flex flex-col gap-2">
-                  {link.children &&
-                    link.children.map((childLinks) => (
-                      <Link key={childLinks.title} href={childLinks.href}>
-                        <li className="pl-3 pr-10">{childLinks.title}</li>
+            <div key={link.id}>
+              <NavigationMenu>
+                <NavigationMenuList>
+                  <NavigationMenuItem>
+                    {link?.children ? (
+                      <NavigationMenuTrigger>
+                        {link.title}
+                      </NavigationMenuTrigger>
+                    ) : (
+                      <Link href={link.href} legacyBehavior passHref>
+                        <NavigationMenuLink
+                          className={navigationMenuTriggerStyle()}
+                        >
+                          {link.title}
+                        </NavigationMenuLink>
                       </Link>
-                    ))}
-                </ul>
-              )}
-            </>
+                    )}
+                    <NavigationMenuContent>
+                      <ul className="flex flex-col gap-0 w-[200px]">
+                        {link.children &&
+                          link.children.map((childLinks) => (
+                            <ListItem
+                              key={childLinks.id}
+                              title={childLinks.title}
+                              href={childLinks.href}
+                            >
+                              {childLinks?.description}
+                            </ListItem>
+                          ))}
+                      </ul>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
+                </NavigationMenuList>
+              </NavigationMenu>
+            </div>
           ))}
         </ul>
 
@@ -130,7 +178,8 @@ const Navbar = () => {
       </section>
 
       {/* mobile links */}
-      {toggleNavbar && (
+
+      {/* {toggleNavbar && (
         <section className="md:hidden fixed bg-white h-screen w-full top-0 right-0 z-50 pt-12 px-5">
           <span className="flex flex-col gap-10">
             <IoClose
@@ -148,7 +197,7 @@ const Navbar = () => {
             ))}
           </ul>
         </section>
-      )}
+      )} */}
     </nav>
   );
 };
