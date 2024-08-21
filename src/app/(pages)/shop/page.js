@@ -1,9 +1,21 @@
 import React from "react";
 import { Breadcrumb } from "antd";
+import { GiSettingsKnobs } from "react-icons/gi";
 
 import shirt from "../../../../public/shirt.png";
 import Filters from "@/components/page/Filters";
 import ProductCard from "@/components/page/ProductCard";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const products = [
   {
@@ -72,23 +84,42 @@ const Shirts = () => {
       <hr />
       <Breadcrumb
         separator=">"
-        items={[{ title: "Shop" }, { title: "Shirts" }]}
+        items={[{ title: "Home" }, { title: "Shop" }]}
         className="py-5"
       />
-      <div className="grid grid-flow-row-dense grid-cols-4 gap-x-5">
-        <section>
+      <div className="grid grid-flow-row-dense md:grid-cols-4 gap-x-5">
+        <section className="md:block hidden">
           <Filters />
         </section>
         <section className="col-span-3">
-          <article className="flex justify-between font-normal text-base items-end">
-            <h2 className="font-bold text-3xl">Casual</h2>
-            <span className="flex gap-3 text-black">
+          <article className="flex justify-between font-normal items-center">
+            <h2 className="font-bold md:text-3xl text-2xl">Casual</h2>
+            <span className="flex gap-3 text-black md:text-base text-xs">
               <p className="text-black/60">Showing 1-10 of 100 Products</p>
-              <p className="text-black/60">Sort by:</p> Most Popular
+              <p className="text-black/60 hidden md:block">Sort by:</p>
+              <p className="hidden md:block">Most Popular</p>
             </span>
+
+            <div className="md:hidden">
+              <Sheet>
+                <SheetTrigger>
+                  <GiSettingsKnobs
+                    size={35}
+                    className="p-2 bg-sc-grayBtn rounded-full md:hidden block"
+                  />
+                </SheetTrigger>
+                <SheetContent side="right">
+                  <ScrollArea className="h-screen">
+                    <div className="pt-5">
+                      <Filters />
+                    </div>
+                  </ScrollArea>
+                </SheetContent>
+              </Sheet>
+            </div>
           </article>
 
-          <article className="grid grid-cols-3 gap-5 py-10">
+          <article className="grid md:grid-cols-3 grid-cols-2 gap-5 py-10">
             {products.map((product) => (
               <ProductCard
                 key={product.name}
@@ -102,6 +133,25 @@ const Shirts = () => {
             ))}
           </article>
           <hr />
+
+          <article className="md:py-10 py-5">
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious href="#" />
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationLink href="#">1</PaginationLink>
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationEllipsis />
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationNext href="#" />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          </article>
         </section>
       </div>
     </div>
