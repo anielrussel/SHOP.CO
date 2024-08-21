@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { GiSettingsKnobs } from "react-icons/gi";
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { Slider } from "@/components/ui/slider";
@@ -94,7 +95,13 @@ const Filters = () => {
   return (
     <div className="border border-black/10 p-5 rounded-lg">
       <section className="flex flex-col gap-4 pb-4">
-        <h2 className="text-xl font-bold">Filters</h2>
+        <span className="flex justify-between">
+          <h2 className="text-xl font-bold">Filters</h2>
+          <GiSettingsKnobs
+            size={35}
+            className="p-2 bg-sc-grayBtn rounded-full hidden md:block"
+          />
+        </span>
         <hr />
 
         <article className="flex flex-col gap-2">

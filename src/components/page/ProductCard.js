@@ -5,7 +5,7 @@ import { Rate } from "antd";
 
 const ProductCard = ({ src, name, rating, price, prevPrice, discount }) => {
   return (
-    <div className="min-w-[295px] min-h-[298px]">
+    <div className="md:min-w-[295px] md:min-h-[298px] min-w-[172px] min-h-[174px]">
       <section className="bg-sc-grayBtn rounded-2xl">
         <Image
           src={src}

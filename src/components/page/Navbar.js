@@ -3,12 +3,11 @@
 import React, { useState, forwardRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { FiSearch } from "react-icons/fi";
 import { IoCartOutline } from "react-icons/io5";
 import { FaRegUserCircle } from "react-icons/fa";
 import { LuMenu } from "react-icons/lu";
-import { IoClose } from "react-icons/io5";
-import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 
 import logo from "../../../public/SHOP.CO.png";
 
@@ -68,6 +67,8 @@ ListItem.displayName = "ListItem";
 const Navbar = () => {
   const [toggleNavbar, setToggleNavbar] = useState(false);
   const [toggleShop, setToggleShop] = useState(false);
+
+  const pathname = usePathname();
 
   const handleToggleNavbar = () => {
     setToggleNavbar(!toggleNavbar);
@@ -130,7 +131,9 @@ const Navbar = () => {
                     ) : (
                       <Link href={link.href} legacyBehavior passHref>
                         <NavigationMenuLink
-                          className={navigationMenuTriggerStyle()}
+                          className={`${navigationMenuTriggerStyle()} ${
+                            pathname === link.href ? "bg-accent" : ""
+                          }`}
                         >
                           {link.title}
                         </NavigationMenuLink>
@@ -158,11 +161,6 @@ const Navbar = () => {
         </ul>
 
         <span className="md:relative hidden md:block">
-          {/* <input
-            type="text"
-            placeholder="Search for products..."
-            className="w-[577px] h-[48px] bg-sc-grayBg pl-12 rounded-full outline-none"
-          /> */}
           <Input
             type="text"
             placeholder="Search for products..."
@@ -172,32 +170,12 @@ const Navbar = () => {
         </span>
 
         <article className="flex items-center gap-4">
-          <IoCartOutline size={25} />
+          <Link href={"/cart"} passHref>
+            <IoCartOutline size={25} />
+          </Link>
           <FaRegUserCircle size={25} />
         </article>
       </section>
-
-      {/* mobile links */}
-
-      {/* {toggleNavbar && (
-        <section className="md:hidden fixed bg-white h-screen w-full top-0 right-0 z-50 pt-12 px-5">
-          <span className="flex flex-col gap-10">
-            <IoClose
-              size={30}
-              onClick={handleToggleNavbar}
-              className="cursor-ointer"
-            />
-            <Image src={logo} width={100} height={22} alt="shop.co" />
-          </span>
-          <ul className="hidden md:flex items-center gap-8">
-            {links.map((link, index) => (
-              <Link key={index} href={link.href}>
-                <li>{link.title}</li>
-              </Link>
-            ))}
-          </ul>
-        </section>
-      )} */}
     </nav>
   );
 };
