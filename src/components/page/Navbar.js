@@ -131,9 +131,8 @@ const Navbar = () => {
                     ) : (
                       <Link href={link.href} legacyBehavior passHref>
                         <NavigationMenuLink
-                          className={`${navigationMenuTriggerStyle()} ${
-                            pathname === link.href ? "bg-accent" : ""
-                          }`}
+                          className={`group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground ${pathname === link.href ? "bg-accent" : ""}
+                         `}
                         >
                           {link.title}
                         </NavigationMenuLink>
