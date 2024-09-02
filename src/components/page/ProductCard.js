@@ -9,8 +9,7 @@ const ProductCard = ({ src, name, rating, price, prevPrice, discount }) => {
       <section className="bg-sc-grayBtn rounded-2xl">
         <Image
           src={src}
-          width={0}
-          height={0}
+          width={"auto"}
           sizes="100vw"
           style={{ width: "100%", height: "auto" }}
           alt="product-image"

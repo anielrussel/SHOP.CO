@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, forwardRef } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -19,7 +19,6 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import {
   Sheet,
@@ -41,27 +40,29 @@ const links = [
   { id: "brands", title: "Brands", href: "#" },
 ];
 
-const ListItem = forwardRef(({ className, title, children, ...props }, ref) => {
-  return (
-    <li>
-      <NavigationMenuLink asChild>
-        <a
-          ref={ref}
-          className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-            className
-          )}
-          {...props}
-        >
-          <div className="text-sm font-medium leading-none">{title}</div>
-          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-            {children}
-          </p>
-        </a>
-      </NavigationMenuLink>
-    </li>
-  );
-});
+const ListItem = React.forwardRef(
+  ({ className, title, children, ...props }, ref) => {
+    return (
+      <li>
+        <NavigationMenuLink asChild>
+          <a
+            ref={ref}
+            className={cn(
+              "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+              className
+            )}
+            {...props}
+          >
+            <div className="text-sm font-medium leading-none">{title}</div>
+            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+              {children}
+            </p>
+          </a>
+        </NavigationMenuLink>
+      </li>
+    );
+  }
+);
 ListItem.displayName = "ListItem";
 
 const Navbar = () => {
@@ -90,11 +91,13 @@ const Navbar = () => {
         <span className="flex items-center gap-4">
           <Sheet>
             <SheetTrigger asChild>
-              <LuMenu
-                size={30}
-                onClick={handleToggleNavbar}
-                className="cursor-pointer md:hidden block"
-              />
+              <div>
+                <LuMenu
+                  size={30}
+                  onClick={handleToggleNavbar}
+                  className="cursor-pointer md:hidden block"
+                />
+              </div>
             </SheetTrigger>
             <SheetContent side="left">
               <SheetHeader>
@@ -131,7 +134,9 @@ const Navbar = () => {
                     ) : (
                       <Link href={link.href} legacyBehavior passHref>
                         <NavigationMenuLink
-                          className={`group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground ${pathname === link.href ? "bg-accent" : ""}
+                          className={`group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground ${
+                            pathname === link.href ? "bg-accent" : ""
+                          }
                          `}
                         >
                           {link.title}

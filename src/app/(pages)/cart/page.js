@@ -54,6 +54,7 @@ const Cart = () => {
                     <Image
                       src={cart.image}
                       alt={cart.name}
+                      width={"auto"}
                       className="md:w-[124px] md:h-[124px] w-[99px] h-[99px] rounded-lg"
                     />
                     <section>
