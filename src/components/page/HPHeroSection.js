@@ -37,8 +37,7 @@ const HPHeroSection = () => {
       <section className="flex items-end relative">
         <Image
           src={herobg}
-          width={0}
-          height={0}
+          width={"auto"}
           sizes="100vw"
           style={{ width: "100%", height: "auto" }}
           priority

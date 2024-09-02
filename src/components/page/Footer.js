@@ -156,7 +156,12 @@ const Footer = () => {
           <p>© 2000-2021, All rights reserved</p>
           <section className="flex">
             {payments.map((payment, index) => (
-              <Image key={index} src={payment.src} alt={payment.name} />
+              <Image
+                key={index}
+                src={payment.src}
+                width={"auto"}
+                alt={payment.name}
+              />
             ))}
           </section>
         </div>
