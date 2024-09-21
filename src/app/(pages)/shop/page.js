@@ -1,8 +1,9 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import { Breadcrumb } from "antd";
 import { GiSettingsKnobs } from "react-icons/gi";
 
-import shirt from "../../../../public/shirt.png";
 import Filters from "@/components/page/Filters";
 import ProductCard from "@/components/page/ProductCard";
 import {
@@ -16,69 +17,33 @@ import {
 } from "@/components/ui/pagination";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Skeleton } from "@/components/ui/skeleton";
 
-const products = [
-  {
-    image: shirt,
-    name: "SC Black Shirt",
-    rating: 4.5,
-    price: "$120",
-  },
-  {
-    image: shirt,
-    name: "SC Black Shirt",
-    rating: 4.5,
-    price: "$120",
-    prevPrice: "$260",
-    discount: "-20%",
-  },
-  {
-    image: shirt,
-    name: "SC Black Shirt",
-    rating: 4.5,
-    price: "$120",
-  },
-  {
-    image: shirt,
-    name: "SC Black Shirt",
-    rating: 4.5,
-    price: "$120",
-  },
-  {
-    image: shirt,
-    name: "SC Black Shirt",
-    rating: 4.5,
-    price: "$120",
-  },
-  {
-    image: shirt,
-    name: "SC Black Shirt",
-    rating: 4.5,
-    price: "$120",
-    prevPrice: "$260",
-    discount: "-20%",
-  },
-  {
-    image: shirt,
-    name: "SC Black Shirt",
-    rating: 4.5,
-    price: "$120",
-  },
-  {
-    image: shirt,
-    name: "SC Black Shirt",
-    rating: 4.5,
-    price: "$120",
-  },
-  {
-    image: shirt,
-    name: "SC Black Shirt",
-    rating: 4.5,
-    price: "$120",
-  },
-];
+import { useGetAllProductsByCategoryQuery } from "@/stores/apiSlice";
 
 const Shirts = () => {
+  const { data: mensShirts, isLoading: isLoadingMensShirts } =
+    useGetAllProductsByCategoryQuery("mens-shirts");
+  const { data: womensDresses, isLoading: isLoadingWomensDresses } =
+    useGetAllProductsByCategoryQuery("womens-dresses");
+  const { data: mensShoes, isLoading: isLoadingMensShoes } =
+    useGetAllProductsByCategoryQuery("mens-shoes");
+  const { data: womensShoes, isLoading: isLoadingWomensShoes } =
+    useGetAllProductsByCategoryQuery("womens-shoes");
+
+  const allProducts = [
+    ...(mensShirts?.products || []),
+    ...(womensDresses?.products || []),
+    ...(mensShoes?.products || []),
+    ...(womensShoes?.products || []),
+  ];
+
+  const isLoading =
+    isLoadingMensShirts ||
+    isLoadingWomensDresses ||
+    isLoadingMensShoes ||
+    isLoadingWomensShoes;
+
   return (
     <div className="md:px-20 px-5 pb-28">
       <hr />
@@ -95,7 +60,7 @@ const Shirts = () => {
           <article className="flex justify-between font-normal items-center">
             <h2 className="font-bold md:text-3xl text-2xl">Casual</h2>
             <span className="flex gap-3 text-black md:text-base text-xs">
-              <p className="text-black/60">Showing 1-10 of 100 Products</p>
+              <p className="text-black/60">{`Showing ${allProducts?.length} of ${allProducts?.length} Products`}</p>
               <p className="text-black/60 hidden md:block">Sort by:</p>
               <p className="hidden md:block">Most Popular</p>
             </span>
@@ -120,18 +85,30 @@ const Shirts = () => {
           </article>
 
           <article className="grid md:grid-cols-3 grid-cols-2 gap-5 py-10">
-            {products.map((product) => (
-              <ProductCard
-                key={product.name}
-                src={product.image}
-                name={product.name}
-                rating={product.rating}
-                price={product.price}
-                prevPrice={product?.prevPrice}
-                discount={product?.discount}
-              />
-            ))}
+            {isLoading
+              ? // Display skeletons while loading
+                Array.from({ length: 9 }).map((_, index) => (
+                  <div key={index} className="space-y-2">
+                    <Skeleton className="md:min-w-[295px] md:min-h-[298px] min-w-[172px] min-h-[174px] rounded-xl" />
+                    <div className="space-y-2">
+                      <Skeleton className="h-4 md:min-w-[295px] min-w-[172px]" />
+                      <Skeleton className="h-4 md:min-w-[295px] min-w-[172px]" />
+                    </div>
+                  </div>
+                ))
+              : allProducts?.map((product) => (
+                  <ProductCard
+                    key={product.id}
+                    src={product?.images[0]}
+                    name={product.title}
+                    rating={product?.rating}
+                    price={product.price}
+                    prevPrice={product?.prevPrice}
+                    discount={product?.discountPercentage}
+                  />
+                ))}
           </article>
+
           <hr />
 
           <article className="md:py-10 py-5">
