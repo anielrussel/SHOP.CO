@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Breadcrumb, Rate } from "antd";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { FaCheck } from "react-icons/fa6";
 
 import graphic_front from "../../../../../public/shirt1.png";
@@ -22,6 +23,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import ProductCard from "@/components/page/ProductCard";
+import { Skeleton } from "@/components/ui/skeleton";
+
+import { useGetProductByIdQuery } from "@/stores/apiSlice";
+import { calculatePreviousPrice } from "@/lib/utils";
 
 const products = [
   {
@@ -35,7 +40,7 @@ const products = [
     image: graphic_back,
   },
   {
-    id: 2,
+    id: 3,
     name: "Shirt 3",
     image: graphic_model,
   },
@@ -69,17 +74,17 @@ const availableSizes = [
     value: "small",
   },
   {
-    id: 1,
+    id: 2,
     label: "Medium",
     value: "medium",
   },
   {
-    id: 1,
+    id: 3,
     label: "Large",
     value: "large",
   },
   {
-    id: 1,
+    id: 4,
     label: "X-Large",
     value: "extralarge",
   },
@@ -97,12 +102,12 @@ const feedbacks = [
     rating: 4.5,
   },
   {
-    name: "James L.",
+    name: "James L1.",
     message: `"As someone who's always on the lookout for unique fashion pieces, I'm thrilled to have stumbled upon Shop.co. The selection of clothes is not only diverse but also on-point with the latest trends.”`,
     rating: 4,
   },
   {
-    name: "James L.",
+    name: "James L2",
     message: `"As someone who's always on the lookout for unique fashion pieces, I'm thrilled to have stumbled upon Shop.co. The selection of clothes is not only diverse but also on-point with the latest trends.”`,
     rating: 4,
   },
@@ -111,13 +116,13 @@ const feedbacks = [
 const moreProducts = [
   {
     image: shirt,
-    name: "SC Black Shirt",
+    name: "SC Black Shirt1",
     rating: 4.5,
     price: "$120",
   },
   {
     image: shirt,
-    name: "SC Black Shirt",
+    name: "SC Black Shirt2",
     rating: 4.5,
     price: "$120",
     prevPrice: "$260",
@@ -125,24 +130,45 @@ const moreProducts = [
   },
   {
     image: shirt,
-    name: "SC Black Shirt",
+    name: "SC Black Shirt3",
     rating: 4.5,
     price: "$120",
   },
   {
     image: shirt,
-    name: "SC Black Shirt",
+    name: "SC Black Shirt4",
     rating: 4.5,
     price: "$120",
   },
 ];
 
 const ProductPage = ({ params }) => {
-  const [selectedImage, setSelectedImage] = useState(products[0].image);
+  const [selectedImage, setSelectedImage] = useState();
+
+  const pathname = usePathname();
+
+  const id = pathname.match(/\/shop\/(\d+)/)?.[1];
+
+  const { data, isLoading } = useGetProductByIdQuery(id);
 
   const handleSelectImage = (image) => {
     setSelectedImage(image);
   };
+
+  const currentPrice = data?.price;
+  const discountPercentage = data?.discountPercentage;
+
+  const previousPrice = calculatePreviousPrice(
+    currentPrice,
+    discountPercentage
+  );
+
+  useEffect(() => {
+    if (data?.images?.length) {
+      setSelectedImage(data.images[0]);
+    }
+  }, [data]);
+
   return (
     <div className="md:px-20 px-5 pb-20">
       <Breadcrumb
@@ -152,56 +178,98 @@ const ProductPage = ({ params }) => {
       />
 
       {/* product decription */}
-      <div className="grid md:grid-cols-2 gap-10">
+      <div className="grid md:grid-cols-2 gap-10 mt-5">
         <section className="flex md:flex-row flex-col-reverse md:justify-between gap-4">
           <div className="flex md:flex-col justify-between">
-            {products.map((product) => (
-              <Image
-                key={product.id}
-                src={product.image}
-                alt={product.name}
-                width={"auto"}
-                onClick={() => handleSelectImage(product.image)}
-                className={`md:w-[152px] md:h-[167px] w-[112px] h-[106px] rounded-[20px] ${
-                  selectedImage === product.image ? "border border-black" : ""
-                }`}
-              />
-            ))}
+            {isLoading ? (
+              <div className="space-y-2">
+                {Array.from({ length: 3 }).map((_, index) => (
+                  <div key={index}>
+                    <Skeleton
+                      className={
+                        "md:w-[152px] md:h-[167px] w-[112px] h-[106px] rounded-[20px]"
+                      }
+                    />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {data?.images
+                  .slice(0, 3)
+                  .map(
+                    (image, index) =>
+                      image && (
+                        <Image
+                          key={index}
+                          src={image}
+                          alt={"images"}
+                          width={100}
+                          height={100}
+                          priority
+                          onClick={() => handleSelectImage(image)}
+                          className={`md:w-[152px] md:h-[167px] w-[112px] h-[106px] rounded-[20px] ${
+                            selectedImage === image
+                              ? "border border-black"
+                              : "border border-black/20"
+                          }`}
+                        />
+                      )
+                  )}
+              </div>
+            )}
           </div>
 
           <div>
-            <Image
-              src={selectedImage}
-              alt="Selected Product"
-              width={"auto"}
-              priority
-              quality={100}
-              className="w-full h-full rounded-[20px]"
-            />
+            {isLoading ? (
+              <div>
+                <Skeleton className={"w-[500px] h-[500px] rounded-[20px]"} />
+              </div>
+            ) : (
+              <>
+                {selectedImage && (
+                  <Image
+                    src={selectedImage}
+                    alt="Selected Product"
+                    width={300}
+                    height={300}
+                    priority
+                    className="w-full h-full rounded-[20px] border border-black/20"
+                  />
+                )}
+              </>
+            )}
           </div>
         </section>
 
         <section className="flex flex-col md:justify-between gap-5 md:gap-0">
-          <article className="flex flex-col gap-2">
-            <h1 className="uppercase md:text-[40px] text-2xl">
-              one life graphic t-shirt
-            </h1>
-            <span>
-              <Rate disabled allowHalf defaultValue={4.5} /> 4.5/5
-            </span>
-            <span className="md:text-4xl text-2xl font-bold flex gap-3">
-              <h2>$260</h2>
-              <h2 className="text-black/60 line-through">$300</h2>
-              <p className="bg-sc-red/10 text-base py-2 px-4 rounded-full font-medium text-sc-red">
-                -40%
+          {isLoading ? (
+            <div className="space-y-2">
+              <Skeleton className={"w-full h-5"} />
+              <Skeleton className={"w-full h-5"} />
+              <Skeleton className={"w-full h-5"} />
+            </div>
+          ) : (
+            <article className="flex flex-col gap-2">
+              <h1 className="uppercase md:text-[40px] text-2xl">
+                {data?.title}
+              </h1>
+              <span>
+                <Rate disabled allowHalf defaultValue={data?.rating} />{" "}
+                {`${data?.rating}/5`}
+              </span>
+              <span className="md:text-4xl text-2xl font-bold flex gap-3">
+                <h2>${data?.price}</h2>
+                <h2 className="text-black/60 line-through">{previousPrice}</h2>
+                <p className="bg-sc-red/10 text-base py-2 px-4 rounded-full font-medium text-sc-red">
+                  {`- ${data?.discountPercentage}%`}
+                </p>
+              </span>
+              <p className="md:text-base text-sm font-normal text-black/60">
+                {data?.description}
               </p>
-            </span>
-            <p className="md:text-base text-sm font-normal text-black/60">
-              This graphic t-shirt which is perfect for any occasion. Crafted
-              from a soft and breathable fabric, it offers superior comfort and
-              style.
-            </p>
-          </article>
+            </article>
+          )}
 
           <hr />
 

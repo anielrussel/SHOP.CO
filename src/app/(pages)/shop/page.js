@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { Breadcrumb } from "antd";
 import { GiSettingsKnobs } from "react-icons/gi";
+import { useRouter } from "next/navigation";
 
 import Filters from "@/components/page/Filters";
 import ProductCard from "@/components/page/ProductCard";
@@ -20,6 +21,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
 
 import { useGetAllProductsByCategoryQuery } from "@/stores/apiSlice";
+import { calculatePreviousPrice } from "@/lib/utils";
 
 const Shirts = () => {
   const { data: mensShirts, isLoading: isLoadingMensShirts } =
@@ -30,6 +32,8 @@ const Shirts = () => {
     useGetAllProductsByCategoryQuery("mens-shoes");
   const { data: womensShoes, isLoading: isLoadingWomensShoes } =
     useGetAllProductsByCategoryQuery("womens-shoes");
+
+  const router = useRouter();
 
   const allProducts = [
     ...(mensShirts?.products || []),
@@ -43,6 +47,10 @@ const Shirts = () => {
     isLoadingWomensDresses ||
     isLoadingMensShoes ||
     isLoadingWomensShoes;
+
+  const handleGetProductById = async (id) => {
+    router.push(`/shop/${id}`);
+  };
 
   return (
     <div className="md:px-20 px-5 pb-28">
@@ -103,8 +111,12 @@ const Shirts = () => {
                     name={product.title}
                     rating={product?.rating}
                     price={product.price}
-                    prevPrice={product?.prevPrice}
+                    prevPrice={calculatePreviousPrice(
+                      product?.price,
+                      product?.discountPercentage
+                    )}
                     discount={product?.discountPercentage}
+                    onClick={() => handleGetProductById(product?.id)}
                   />
                 ))}
           </article>
