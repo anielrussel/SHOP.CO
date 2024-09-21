@@ -88,7 +88,7 @@ const Navbar = () => {
       </section>
 
       <section className="flex items-center justify-between md:px-20 px-5 py-5">
-        <span className="flex items-center gap-4">
+        <span className="flex items-center">
           <Sheet>
             <SheetTrigger asChild>
               <div>
@@ -110,7 +110,7 @@ const Navbar = () => {
             </SheetContent>
           </Sheet>
 
-          <Link href={"/"}>
+          <Link href={"/"} passHref>
             <Image
               src={logo}
               width={160}

@@ -9,35 +9,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 import { useGetAllProductsByCategoryQuery } from "@/stores/apiSlice";
 
-// const products = [
-//   {
-//     image: shirt,
-//     name: "SC Black Shirt",
-//     rating: 4.5,
-//     price: "$120",
-//   },
-//   {
-//     image: shirt,
-//     name: "SC Black Shirt",
-//     rating: 4.5,
-//     price: "$120",
-//     prevPrice: "$260",
-//     discount: "-20%",
-//   },
-//   {
-//     image: shirt,
-//     name: "SC Black Shirt",
-//     rating: 4.5,
-//     price: "$120",
-//   },
-//   {
-//     image: shirt,
-//     name: "SC Black Shirt",
-//     rating: 4.5,
-//     price: "$120",
-//   },
-// ];
-
 const HPNewArrivals = () => {
   const { data: mensShirts, isLoading: isLoadingMensShirts } =
     useGetAllProductsByCategoryQuery("mens-shirts");

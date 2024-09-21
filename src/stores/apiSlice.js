@@ -8,10 +8,17 @@ export const productsApi = createApi({
     getAllProducts: builder.query({
       query: () => "products",
     }),
+
+    // Get product by id
+    getProductById: builder.query({
+      query: (id) => `products/${id}`,
+    }),
+
     //Get all products by category
     getAllProductsByCategory: builder.query({
       query: (category) => `products/category/${category}`,
     }),
+
     // Get all categories
     getAllProductCategories: builder.query({
       query: () => "products/categories",
@@ -21,6 +28,7 @@ export const productsApi = createApi({
 
 export const {
   useGetAllProductsQuery,
+  useGetProductByIdQuery,
   useGetAllProductsByCategoryQuery,
   useGetAllProductCategoriesQuery,
 } = productsApi;
