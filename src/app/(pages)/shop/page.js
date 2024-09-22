@@ -16,12 +16,19 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
 
 import { useGetAllProductsByCategoryQuery } from "@/stores/apiSlice";
 import { calculatePreviousPrice } from "@/lib/utils";
+import Link from "next/link";
 
 const Shirts = () => {
   const { data: mensShirts, isLoading: isLoadingMensShirts } =
@@ -48,9 +55,9 @@ const Shirts = () => {
     isLoadingMensShoes ||
     isLoadingWomensShoes;
 
-  const handleGetProductById = async (id) => {
-    router.push(`/shop/${id}`);
-  };
+  // const handleGetProductById = async (id) => {
+  //   router.push(`/shop/${id}`);
+  // };
 
   return (
     <div className="md:px-20 px-5 pb-28">
@@ -81,6 +88,10 @@ const Shirts = () => {
                     className="p-2 bg-sc-grayBtn rounded-full md:hidden block"
                   />
                 </SheetTrigger>
+                <SheetTitle className="sr-only">Filter-Bar</SheetTitle>
+                <SheetDescription className="sr-only">
+                  Filter-Bar
+                </SheetDescription>
                 <SheetContent side="right">
                   <ScrollArea className="h-screen">
                     <div className="pt-5">
@@ -92,7 +103,7 @@ const Shirts = () => {
             </div>
           </article>
 
-          <article className="grid md:grid-cols-3 grid-cols-2 gap-5 py-10">
+          <article className="grid md:grid-cols-3 grid-cols-1 gap-5 py-10">
             {isLoading
               ? // Display skeletons while loading
                 Array.from({ length: 9 }).map((_, index) => (
@@ -105,19 +116,20 @@ const Shirts = () => {
                   </div>
                 ))
               : allProducts?.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    src={product?.images[0]}
-                    name={product.title}
-                    rating={product?.rating}
-                    price={product.price}
-                    prevPrice={calculatePreviousPrice(
-                      product?.price,
-                      product?.discountPercentage
-                    )}
-                    discount={product?.discountPercentage}
-                    onClick={() => handleGetProductById(product?.id)}
-                  />
+                  <Link key={product.id} href={`/shop/${product?.id}`} passHref>
+                    <ProductCard
+                      src={product?.images[0]}
+                      name={product.title}
+                      rating={product?.rating}
+                      price={product.price}
+                      prevPrice={calculatePreviousPrice(
+                        product?.price,
+                        product?.discountPercentage
+                      )}
+                      discount={product?.discountPercentage}
+                      // onClick={() => handleGetProductById(product?.id)}
+                    />
+                  </Link>
                 ))}
           </article>
 

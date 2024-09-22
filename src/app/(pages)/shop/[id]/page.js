@@ -28,24 +28,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useGetProductByIdQuery } from "@/stores/apiSlice";
 import { calculatePreviousPrice } from "@/lib/utils";
 
-const products = [
-  {
-    id: 1,
-    name: "Shirt 1",
-    image: graphic_front,
-  },
-  {
-    id: 2,
-    name: "Shirt 2",
-    image: graphic_back,
-  },
-  {
-    id: 3,
-    name: "Shirt 3",
-    image: graphic_model,
-  },
-];
-
 const availableColors = [
   {
     id: 1,
@@ -90,29 +72,6 @@ const availableSizes = [
   },
 ];
 
-const feedbacks = [
-  {
-    name: "Sarah M.",
-    message: `"I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations.”`,
-    rating: 5,
-  },
-  {
-    name: "Alex K.",
-    message: `"Finding clothes that align with my personal style used to be a challenge until I discovered Shop.co. The range of options they offer is truly remarkable, catering to a variety of tastes and occasions.”`,
-    rating: 4.5,
-  },
-  {
-    name: "James L1.",
-    message: `"As someone who's always on the lookout for unique fashion pieces, I'm thrilled to have stumbled upon Shop.co. The selection of clothes is not only diverse but also on-point with the latest trends.”`,
-    rating: 4,
-  },
-  {
-    name: "James L2",
-    message: `"As someone who's always on the lookout for unique fashion pieces, I'm thrilled to have stumbled upon Shop.co. The selection of clothes is not only diverse but also on-point with the latest trends.”`,
-    rating: 4,
-  },
-];
-
 const moreProducts = [
   {
     image: shirt,
@@ -147,6 +106,7 @@ const ProductPage = ({ params }) => {
 
   const pathname = usePathname();
 
+  // Get the id in the pathname
   const id = pathname.match(/\/shop\/(\d+)/)?.[1];
 
   const { data, isLoading } = useGetProductByIdQuery(id);
@@ -155,9 +115,9 @@ const ProductPage = ({ params }) => {
     setSelectedImage(image);
   };
 
+  // Calculate the previous price
   const currentPrice = data?.price;
   const discountPercentage = data?.discountPercentage;
-
   const previousPrice = calculatePreviousPrice(
     currentPrice,
     discountPercentage
@@ -330,7 +290,7 @@ const ProductPage = ({ params }) => {
         <section className="flex justify-between flex-wrap mt-10">
           <span className="flex gap-1 items-center">
             <h2 className="md:text-2xl text-xl font-bold">All Reviews</h2>
-            <p className="text-base font-normal text-black/60">{`(45)`}</p>
+            <p className="text-base font-normal text-black/60">{`(${data?.reviews.length})`}</p>
           </span>
           <article className="flex gap-2">
             <Select defaultValue={"latest"}>
@@ -349,24 +309,25 @@ const ProductPage = ({ params }) => {
         </section>
 
         <section className="grid md:grid-cols-2 gap-5 my-5">
-          {feedbacks.map((feedback) => (
-            <div
-              key={feedback.name}
-              className="border border-black/10 p-5 rounded-2xl"
-            >
-              <Rate disabled allowHalf defaultValue={feedback.rating} />
-              <span className="py-2 text-xl font-bold flex items-center gap-2">
-                <h2>{feedback.name}</h2>
-                <FaCheck
-                  className="bg-[#01AB31] rounded-full p-1"
-                  color="white"
-                />
-              </span>
-              <p className="text-base font-medium text-black/60">
-                {feedback.message}
-              </p>
-            </div>
-          ))}
+          {data &&
+            data.reviews.map((feedback) => (
+              <div
+                key={feedback.reviewerName}
+                className="border border-black/10 p-5 rounded-2xl"
+              >
+                <Rate disabled allowHalf defaultValue={feedback.rating} />
+                <span className="py-2 text-xl font-bold flex items-center gap-2">
+                  <h2>{feedback.reviewerName}</h2>
+                  <FaCheck
+                    className="bg-[#01AB31] rounded-full p-1"
+                    color="white"
+                  />
+                </span>
+                <p className="text-base font-medium text-black/60">
+                  {feedback.comment}
+                </p>
+              </div>
+            ))}
         </section>
         <section className="flex justify-center mt-10">
           <Button variant="outline" className="rounded-full px-8">

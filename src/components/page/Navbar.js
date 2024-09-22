@@ -23,6 +23,7 @@ import {
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -99,6 +100,8 @@ const Navbar = () => {
                 />
               </div>
             </SheetTrigger>
+            <SheetTitle className="sr-only">Menu-Bar</SheetTitle>
+            <SheetDescription className="sr-only">Menu-Bar</SheetDescription>
             <SheetContent side="left">
               <SheetHeader>
                 {links.map((link, index) => (
@@ -113,8 +116,9 @@ const Navbar = () => {
           <Link href={"/"} passHref>
             <Image
               src={logo}
-              width={160}
-              height={22}
+              // width={160}
+              // height={22}
+              // style={{ width: "auto", height: "auto" }}
               alt="shop.co"
               className="w-[100px] md:w-[160px]"
             />

@@ -14,7 +14,7 @@ const HPTopSelling = () => {
     useGetAllProductsByCategoryQuery("womens-dresses");
   return (
     <div className="h-auto flex flex-col items-center py-20 md:px-20 px-5 gap-16">
-      <h1 className="text-[48px]">TOP SELLING</h1>
+      <h1 className="text-[48px]">WOMEN'S DRESSES</h1>
       <section className="flex md:justify-between gap-4 md:gap-0 w-full overflow-x-auto">
         {isLoadingWomensDresses ? ( // Display skeletons while loading
           Array.from({ length: 4 }).map((_, index) => (
