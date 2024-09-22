@@ -21,9 +21,9 @@ const ProductCard = ({
         <Image
           src={src}
           fill
-          // width={200}
-          // height={200}
-          // sizes="100vw"
+          // width={240}
+          // height={240}
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           // style={{ width: "100%", height: "auto" }}
           priority
           style={{ objectFit: "cover", objectPosition: "center" }}

@@ -9,24 +9,11 @@ import { FaArrowLeft, FaArrowRight } from "react-icons/fa6";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-const feedbacks = [
-  {
-    name: "Sarah M.",
-    message: `"I'm blown away by the quality and style of the clothes I received from Shop.co. From casual wear to elegant dresses, every piece I've bought has exceeded my expectations.”`,
-    rating: 5,
-  },
-  {
-    name: "Alex K.",
-    message: `"Finding clothes that align with my personal style used to be a challenge until I discovered Shop.co. The range of options they offer is truly remarkable, catering to a variety of tastes and occasions.”`,
-    rating: 4.5,
-  },
-  {
-    name: "James L.",
-    message: `"As someone who's always on the lookout for unique fashion pieces, I'm thrilled to have stumbled upon Shop.co. The selection of clothes is not only diverse but also on-point with the latest trends.”`,
-    rating: 4,
-  },
-];
+import { Skeleton } from "@/components/ui/skeleton";
 
+import { useGetAllProductsByCategoryQuery } from "@/stores/apiSlice";
+
+// Customized arrows for react-slick
 const NextArrow = (props) => {
   const { onClick } = props;
   return (
@@ -35,7 +22,6 @@ const NextArrow = (props) => {
     </div>
   );
 };
-
 const PrevArrow = (props) => {
   const { onClick } = props;
   return (
@@ -46,6 +32,7 @@ const PrevArrow = (props) => {
 };
 
 const HPFeedbacks = () => {
+  // Settings for react-slick
   const settings = {
     className: "center no-scrollbar overflow-x-auto pt-16",
     centerMode: true,
@@ -87,28 +74,58 @@ const HPFeedbacks = () => {
       },
     ],
   };
+
+  const { data: mensShirts, isLoading: isLoadingMensShirts } =
+    useGetAllProductsByCategoryQuery("mens-shirts");
+  const { data: womensDresses, isLoading: isLoadingWomensDresses } =
+    useGetAllProductsByCategoryQuery("womens-dresses");
+
+  // Combine all products
+  const allProducts = [
+    ...(mensShirts?.products || []),
+    ...(womensDresses?.products || []),
+  ];
+
+  // Manage loading state
+  const isLoading = isLoadingMensShirts || isLoadingWomensDresses;
+
+  //Get all the reviews
+  const productReviews = allProducts?.map((product) => product?.reviews).flat();
+
   return (
     <div className="py-20">
       <h1 className="md:px-20 px-5 md:text-5xl md:w-full w-1/2 text-3xl -mb-8">
-        OUR HAPPY CUSTOMERS
+        OUR CUSTOMERS REVIEW
       </h1>
-      <Slider {...settings}>
-        {feedbacks.map((feedback) => (
-          <div key={feedback.name}>
-            <Rate disabled allowHalf defaultValue={feedback.rating} />
-            <span className="py-2 text-xl font-bold flex items-center gap-2">
-              <h2>{feedback.name}</h2>
-              <FaCheck
-                className="bg-[#01AB31] rounded-full p-1"
-                color="white"
-              />
-            </span>
-            <p className="text-base font-medium text-black/60">
-              {feedback.message}
-            </p>
-          </div>
-        ))}
-      </Slider>
+
+      {isLoading ? (
+        <div className="mx-[5%] flex lg:justify-between mt-20">
+          <Skeleton className={"w-[420px] h-[250px]"} />
+          <Skeleton className={"w-[420px] h-[250px] lg:block hidden"} />
+          <Skeleton className={"w-[420px] h-[250px] lg:block hidden"} />
+        </div>
+      ) : (
+        <div>
+          <Slider {...settings}>
+            {productReviews &&
+              productReviews?.map((feedback, index) => (
+                <div key={index}>
+                  <Rate disabled allowHalf defaultValue={feedback.rating} />
+                  <span className="py-2 text-xl font-bold flex items-center gap-2">
+                    <h2>{feedback.reviewerName}</h2>
+                    <FaCheck
+                      className="bg-[#01AB31] rounded-full p-1"
+                      color="white"
+                    />
+                  </span>
+                  <p className="text-base font-medium text-black/60">
+                    {feedback.comment}
+                  </p>
+                </div>
+              ))}
+          </Slider>
+        </div>
+      )}
     </div>
   );
 };
